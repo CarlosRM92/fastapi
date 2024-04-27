@@ -6,10 +6,10 @@ import jwt
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from schemas.user import UserSignin
 from starlette.responses import FileResponse
-from modules.routes.app import router as routes_router
+from modules.RainPredictor.app import router as routes_router
 
 app = FastAPI()
-app.include_router(routes_router, prefix="/routes")
+app.include_router(routes_router, prefix="/rainPredictor")
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 

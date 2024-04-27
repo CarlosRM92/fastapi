@@ -1,38 +1,38 @@
 from fastapi import APIRouter, Depends, HTTPException
-from .strategy import CarRoute, BikeRoute, RouteStrategy, MotorcycleRoute
+from .EjercicioStrategy import PrediccionClimaSimple, PrediccionClimaAvanzada, PrediccionClima
 from enum import Enum
 
 
-class Vehicle(Enum):
-    CAR = "car"
-    BIKE = "bike"
-    MOTORCYCLE = "motorcycle"
+class Predicciones(Enum):
+    SIMPLE = "simple"
+    AVANZADA = "avanzada"
+    PRONOSTICO = "pronostico"
 
 
-def get_strategy(vehicle: Vehicle) -> RouteStrategy:
-    if vehicle == Vehicle.CAR:
-        return CarRoute()
-    elif vehicle == Vehicle.BIKE:
-        return BikeRoute()
-    elif vehicle == Vehicle.MOTORCYCLE:
-        return MotorcycleRoute()
+def get_pronostico(predicciones: Predicciones) -> PrediccionClima:
+    if predicciones == Predicciones.SIMPLE:
+        return PrediccionClimaSimple()
+    elif predicciones == Predicciones.AVANZADA:
+        return PrediccionClimaAvanzada()
+    elif predicciones == Predicciones.PRONOSTICO:
+        return PrediccionClima()
     else:
-        raise HTTPException(status_code=400, detail="Invalid vehicle")
+        raise HTTPException(status_code=400, detail="Prediccion Invalida")
 
 
 router = APIRouter()
 
 
-@router.get("/best_route")
-def best_route(origin: int, destination: int, vehicle: RouteStrategy = Depends(get_strategy)) -> dict:
-    return vehicle.get_best_route(origin=origin, destination=destination)
+@router.get("/Predecir_Simple")
+def PredecirSimple(predicciones: PrediccionClima = Depends(get_pronostico)) -> None:
+    return predicciones.llovera
 
 
-@router.get("/cost")
-def cost(origin: int, destination: int, vehicle: RouteStrategy = Depends(get_strategy)) -> float:
-    return vehicle.get_cost(origin=origin, destination=destination)
+@router.get("/Predecir_Avanzada")
+def PredecirAvanzada(predicciones: PrediccionClima = Depends(get_pronostico)) -> None:
+    return predicciones.llovera
 
 
-@router.get("/time")
-def time(origin: int, destination: int, vehicle: RouteStrategy = Depends(get_strategy)) -> float:
-    return vehicle.get_time(origin=origin, destination=destination)
+@router.get("/Predecir_General")
+def predecir(predicciones: PrediccionClima = Depends(get_pronostico)) -> None:
+    return predicciones.llovera
